@@ -30,7 +30,7 @@ def load_data():
     return train, test
 
 
-def preprocess_data(data):
+def preprocess_data(data, is_train=True):
     df = one_hot_encode(df, "website")
 
     # Column 'make': Lowercase, remove spaces, and remove accents
@@ -88,5 +88,8 @@ def preprocess_data(data):
     df = frequency_encode(df, "dealer_id")
 
     df = drop_columns(df, ["make", "model", "version"])
+
+    if is_train:
+        df = df.drop(columns=["id"])
 
     return df
