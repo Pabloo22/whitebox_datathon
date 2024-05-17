@@ -7,7 +7,7 @@ from whitebox_datathon.preprocessing import (
     one_hot_encode_top_n,
     frequency_encode,
 )
-from whitebox_datathon.preprocessing2 import add_antiguedad
+from whitebox_datathon.preprocessing_2 import add_antiguedad
 
 from whitebox_datathon.paths import DATA_RAW
 from whitebox_datathon.mappings import FUEL_MAPPING, SHIFT_MAPPING, YEAR_MAPPING
