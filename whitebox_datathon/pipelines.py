@@ -28,7 +28,7 @@ def load_data():
         "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/train.csv"
     )
     test = pd.read_csv(
-        "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/train.csv"
+        "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/test.csv"
     )
 
     return train, test
