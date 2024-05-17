@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-import xgboost as xgb
+import whitebox_datathon.xgboost__ as xgb
 import optuna
 from optuna.samplers import TPESampler
 
