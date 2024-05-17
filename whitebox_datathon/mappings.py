@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 YEAR_MAPPING = {
     2015: 2015,
     2021: 2021,
@@ -107,4 +110,44 @@ YEAR_MAPPING = {
     1951: 1951,
     20000: 2000,  # Assuming 20000 is a typo for 2000
     1952: 1952,
+}
+
+FUEL_MAPPING = {
+    "Diésel": "diesel",
+    "Diesel": "diesel",
+    "diesel": "diesel",
+    "Gasolina": "gasolina",
+    "petrol": "gasolina",
+    "Gasolina/Etanol": "gasolina",
+    "Gas": "gas",
+    "Gas licuado (GLP)": "gas",
+    "GNC": "gas",
+    "Gas natural (CNG)": "gas",
+    "gas": "gas",
+    "Eléctrico": "eléctrico",
+    "electricity": "eléctrico",
+    "Híbrido": "híbrido",
+    "Híbrido enchufable": "híbrido",
+    "Híbrido Gasolina": "híbrido",
+    "hybrid": "híbrido",
+    "Híbrido Diésel": "híbrido",
+    "Híbrido Enchufable": "híbrido",
+    "Otros": "otros",
+    "other": "otros",
+}
+
+SHIFT_MAPPING = {
+    "Manual": "manual",
+    "manual": "manual",
+    "manual_gear": "manual",
+    "manual automatizada": "automático",
+    "Automático": "automático",
+    "Automática": "automático",
+    "automatic": "automático",
+    "automática secuencial": "automático",
+    "automatic_gear": "automático",
+    "automática continua": "automático",
+    "semiautomatic_gear": "automático",
+    "directo, sin caja de cambios": "automático",
+    "automática": "automático",
 }
