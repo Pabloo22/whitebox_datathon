@@ -1,5 +1,17 @@
-import pandas as pd
-import numpy as np
+from collections import defaultdict
+
+
+def _get_doors_mapping():
+    # Define valid door counts
+    valid_doors = [2, 3, 4, 5]
+    # Create a defaultdict with a default value of 0
+    doors_mapping = defaultdict(lambda: 0, {door: door for door in valid_doors})
+
+    return doors_mapping
+
+
+DOORS_MAPPING = _get_doors_mapping()
+
 
 YEAR_MAPPING = {
     2015: 2015,
