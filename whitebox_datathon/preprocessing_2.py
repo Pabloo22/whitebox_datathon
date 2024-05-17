@@ -17,3 +17,8 @@ def add_antiguedad(df):
 
     # Calculate 'antiguedad' as the difference between 'published_year' and 'year'
     df["antiguedad"] = df["published_year"] - df["year"]
+
+    # drop columns 'publish_date' and 'published_year'
+    df = df.drop(columns=["publish_date", "published_year"])
+
+    return df

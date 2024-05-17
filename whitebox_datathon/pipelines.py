@@ -24,13 +24,17 @@ def load_data():
     pd.DataFrame
         Raw data.
     """
-    train = pd.read_csv(DATA_RAW / "train.csv")
-    test = pd.read_csv(DATA_RAW / "test.csv")
+    train = pd.read_csv(
+        "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/train.csv"
+    )
+    test = pd.read_csv(
+        "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/train.csv"
+    )
 
     return train, test
 
 
-def preprocess_data(data, is_train=True):
+def preprocess_data(df, is_train=True):
     df = one_hot_encode(df, "website")
 
     # Column 'make': Lowercase, remove spaces, and remove accents
@@ -82,7 +86,7 @@ def preprocess_data(data, is_train=True):
     df = frequency_encode(df, "location")
 
     # Column 'publish_date': Extract year and compute antiguedad
-    df = add_antiguedad(df, "publish_date", "year")
+    add_antiguedad(df)
 
     # Column 'dealer_id': Frequency encoding
     df = frequency_encode(df, "dealer_id")
@@ -91,5 +95,8 @@ def preprocess_data(data, is_train=True):
 
     if is_train:
         df = df.drop(columns=["id"])
+
+    # drop all non-numerical columns
+    df = df.select_dtypes(include=["number"])
 
     return df
