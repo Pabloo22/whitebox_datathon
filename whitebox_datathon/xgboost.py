@@ -66,9 +66,9 @@ def train_xgboost(
 
 if __name__ == "__main__":
     # Paths to your CSV files
-    train_path = "path_to_your_training_csv_file.csv"
-    test_path = "path_to_your_test_csv_file.csv"
-    submission_path = "path_to_save_your_submission_csv_file.csv"
+    from whitebox_datathon.paths import DATA_RAW
+    train_path = DATA_RAW / "train.csv"
+    test_path = DATA_RAW / "test.csv"
 
     # Load data
     train_df, test_df = load_data(train_path, test_path)
