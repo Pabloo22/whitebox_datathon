@@ -12,6 +12,8 @@ pandas = "^2.2.2"
 numpy = "^1.26.4"
 scikit-learn = "^1.4.2"
 ydata-profiling = "^4.8.3"
+xgboost = "^2.0.3"
+optuna = "^3.6.1"
 
 
 [build-system]
