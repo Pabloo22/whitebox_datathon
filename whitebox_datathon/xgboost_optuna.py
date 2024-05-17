@@ -34,6 +34,11 @@ def preprocess_data(df, is_train=True):
         pd.DataFrame, pd.Series or pd.DataFrame: Processed features and target
         variable if training data.
     """
+    if is_train:
+        X = df.drop(columns=["price"])
+        y = df["price"]
+        return X, y
+    return df
 
 
 def objective(trial, X_train, y_train, X_valid, y_valid):
@@ -130,7 +135,7 @@ def train_and_predict(train_path, test_path, submission_path):
     finally:
         # Make predictions on the test set
         test_preds = model.predict(xgb.DMatrix(X_test))
-    
+
         # Create the submission DataFrame
         submission_df = pd.DataFrame({"id": test_df["id"], "price": test_preds})
         # Save the submission file
