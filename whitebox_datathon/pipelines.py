@@ -27,9 +27,7 @@ def load_data():
     train = pd.read_csv(
         "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/train.csv"
     )
-    test = pd.read_csv(
-        "/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/test.csv"
-    )
+    test = pd.read_csv("/home/pablo/VSCodeProjects/whitebox_datathon/data/raw/test.csv")
 
     return train, test
 
@@ -80,7 +78,8 @@ def preprocess_data(df, is_train=True):
     df = clip_column(df, "photos", lower=0, upper=100)
 
     # Column 'price': Drop rows with prices greater than 500k or less than 200
-    df = drop_clip_column(df, "price", lower=200, upper=500000)
+    if is_train:
+        df = drop_clip_column(df, "price", lower=200, upper=500000)
 
     # Column 'location': Frequency encoding
     df = frequency_encode(df, "location")
