@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
 
 
 def filter_column(data, column, map_dict, na_values=None):
@@ -114,6 +115,35 @@ def one_hot_encode(data, column):
     data = pd.get_dummies(data, columns=[column])
 
     return data
+
+
+def one_hot_encode_top_n(df, column, top_n):
+    # Get the top n most frequent categories
+    top_categories = df[column].value_counts().index[:top_n]
+
+    # Create a new column with 'others' for categories not in the top n
+    df[column + "_top_n"] = df[column].apply(
+        lambda x: x if x in top_categories else "others"
+    )
+
+    # One-hot encode the new column
+    encoder = OneHotEncoder(
+        sparse=False, drop="first"
+    )  # drop='first' to avoid dummy variable trap
+    one_hot_encoded = encoder.fit_transform(df[[column + "_top_n"]])
+
+    # Create a DataFrame with the one-hot encoded variables
+    one_hot_encoded_df = pd.DataFrame(
+        one_hot_encoded, columns=encoder.get_feature_names_out([column + "_top_n"])
+    )
+
+    # Drop the temporary column used for encoding
+    df.drop(columns=[column + "_top_n"], inplace=True)
+
+    # Concatenate the one-hot encoded columns back to the original DataFrame
+    df = pd.concat([df, one_hot_encoded_df], axis=1)
+
+    return df
 
 
 def frequency_encode(data, column):
