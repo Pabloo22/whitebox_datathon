@@ -31,7 +31,8 @@ def preprocess_data(df, is_train=True):
         is_train (bool): Flag to indicate if the data is training data.
 
     Returns:
-        pd.DataFrame, pd.Series or pd.DataFrame: Processed features and target variable if training data.
+        pd.DataFrame, pd.Series or pd.DataFrame: Processed features and target
+        variable if training data.
     """
 
 
@@ -97,44 +98,44 @@ def train_and_predict(train_path, test_path, submission_path):
         test_path (str): Path to the test CSV file.
         submission_path (str): Path to save the submission CSV file.
     """
-    # Load data
-    train_df, test_df = load_data(train_path, test_path)
+    try:
+        # Load data
+        train_df, test_df = load_data(train_path, test_path)
 
-    # Preprocess data
-    X_train, y_train = preprocess_data(train_df)
-    X_test = preprocess_data(test_df, is_train=False)
+        # Preprocess data
+        X_train, y_train = preprocess_data(train_df)
+        X_test = preprocess_data(test_df, is_train=False)
 
-    # Split training data for validation
-    X_train_split, X_valid_split, y_train_split, y_valid_split = train_test_split(
-        X_train, y_train, test_size=0.2, random_state=42
-    )
+        # Split training data for validation
+        X_train_split, X_valid_split, y_train_split, y_valid_split = train_test_split(
+            X_train, y_train, test_size=0.2, random_state=42
+        )
 
-    # Hyperparameter tuning with Optuna
-    study = optuna.create_study(direction="minimize", sampler=TPESampler(seed=42))
-    study.optimize(
-        lambda trial: objective(
-            trial, X_train_split, y_train_split, X_valid_split, y_valid_split
-        ),
-        n_trials=100,
-    )
+        # Hyperparameter tuning with Optuna
+        study = optuna.create_study(direction="minimize", sampler=TPESampler(seed=42))
+        study.optimize(
+            lambda trial: objective(
+                trial, X_train_split, y_train_split, X_valid_split, y_valid_split
+            ),
+            n_trials=100,
+        )
 
-    # Train final model with best hyperparameters on all training data
-    best_params = study.best_trial.params
-    best_params["verbosity"] = 0
-    best_params["objective"] = "reg:squarederror"
-    best_params["eval_metric"] = "rmse"
+        # Train final model with best hyperparameters on all training data
+        best_params = study.best_trial.params
+        best_params["verbosity"] = 0
+        best_params["objective"] = "reg:squarederror"
+        best_params["eval_metric"] = "rmse"
 
-    model = xgb.train(best_params, xgb.DMatrix(X_train, label=y_train))
-
-    # Make predictions on the test set
-    test_preds = model.predict(xgb.DMatrix(X_test))
-
-    # Create the submission DataFrame
-    submission_df = pd.DataFrame({"id": test_df["id"], "price": test_preds})
-
-    # Save the submission file
-    submission_df.to_csv(submission_path, index=False)
-    print(f"Submission file saved to {submission_path}")
+        model = xgb.train(best_params, xgb.DMatrix(X_train, label=y_train))
+    finally:
+        # Make predictions on the test set
+        test_preds = model.predict(xgb.DMatrix(X_test))
+    
+        # Create the submission DataFrame
+        submission_df = pd.DataFrame({"id": test_df["id"], "price": test_preds})
+        # Save the submission file
+        submission_df.to_csv(submission_path, index=False)
+        print(f"Submission file saved to {submission_path}")
 
 
 if __name__ == "__main__":
